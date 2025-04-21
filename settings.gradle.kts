@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "KurlyCommerce"
 include(":app")
+include(":mockserver")
