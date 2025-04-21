@@ -1,4 +1,4 @@
-package com.kurly.android.commerce
+package com.kurly.android.commerce.presentation.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
