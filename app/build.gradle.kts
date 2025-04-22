@@ -53,4 +53,7 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // build.gradle.kts에 추가
+    implementation("com.jakewharton.timber:timber:5.0.1")
 }
