@@ -75,4 +75,9 @@ dependencies {
 
     // build.gradle.kts에 추가
     implementation("com.jakewharton.timber:timber:5.0.1")
+
+    // Hilt Compose Navigation 라이브러리
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+
+    implementation ("androidx.compose.material:material:1.7.8")
 }
