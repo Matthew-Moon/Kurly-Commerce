@@ -1,10 +1,10 @@
-package com.kurly.android.commerce.ui.home
+package com.kurly.android.commerce.presentation.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kurly.android.commerce.data.repository.KurlyRepository
-import com.kurly.android.commerce.ui.home.model.ProductUiModel
-import com.kurly.android.commerce.ui.home.model.SectionUiModel
+import com.kurly.android.commerce.presentation.home.model.ProductUiModel
+import com.kurly.android.commerce.presentation.home.model.SectionUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

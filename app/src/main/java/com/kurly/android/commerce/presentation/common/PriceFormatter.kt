@@ -1,4 +1,4 @@
-package com.kurly.android.commerce.ui.common
+package com.kurly.android.commerce.presentation.common
 
 fun Int.toPriceString(): String {
     return "%,d".format(this)

@@ -1,4 +1,4 @@
-package com.kurly.android.commerce.ui.home
+package com.kurly.android.commerce.presentation.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -18,8 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.kurly.android.commerce.ui.common.KurlySection
-import com.kurly.android.commerce.ui.theme.KurlyColor
+import com.kurly.android.commerce.presentation.common.KurlySection
+import com.kurly.android.commerce.presentation.theme.KurlyColor
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable

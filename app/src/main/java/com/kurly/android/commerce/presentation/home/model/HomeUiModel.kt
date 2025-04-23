@@ -1,4 +1,4 @@
-package com.kurly.android.commerce.ui.home.model
+package com.kurly.android.commerce.presentation.home.model
 
 data class SectionUiModel(
     val id: Int,

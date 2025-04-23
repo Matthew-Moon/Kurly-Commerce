@@ -1,4 +1,4 @@
-package com.kurly.android.commerce.ui.common
+package com.kurly.android.commerce.presentation.common
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -26,11 +26,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.kurly.android.commerce.ui.home.model.ProductUiModel
-import com.kurly.android.commerce.ui.theme.CancelPrice
-import com.kurly.android.commerce.ui.theme.DiscountLate
-import com.kurly.android.commerce.ui.theme.ProductName
-import com.kurly.android.commerce.ui.theme.ProductPrice
+import com.kurly.android.commerce.presentation.home.model.ProductUiModel
+import com.kurly.android.commerce.presentation.theme.CancelPrice
+import com.kurly.android.commerce.presentation.theme.DiscountLate
+import com.kurly.android.commerce.presentation.theme.ProductName
+import com.kurly.android.commerce.presentation.theme.ProductPrice
 
 @Composable
 fun KurlyProduct(
