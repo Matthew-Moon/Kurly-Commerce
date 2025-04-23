@@ -6,6 +6,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    
     <application
         android:name=".KurlyApplication"
         android:allowBackup="true"
@@ -18,7 +20,7 @@
         android:theme="@style/Theme.KurlyCommerce">
 
         <activity
-            android:name=".MainActivity"
+            android:name=".presentation.main.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.KurlyCommerce">
             <intent-filter>
