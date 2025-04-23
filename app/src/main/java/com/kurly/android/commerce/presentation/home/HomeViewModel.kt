@@ -27,8 +27,25 @@ class HomeViewModel @Inject constructor(
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error.asStateFlow()
 
+    // 찜한 상품 ID 목록
+    private val _favorites = MutableStateFlow<Set<Long>>(emptySet())
+    val favorites: StateFlow<Set<Long>> = _favorites.asStateFlow()
+
     init {
         loadSections()
+    }
+
+    fun toggleFavorite(productId: Long) {
+        val currentFavorites = _favorites.value.toMutableSet()
+        if (currentFavorites.contains(productId)) {
+            currentFavorites.remove(productId)
+        } else {
+            currentFavorites.add(productId)
+        }
+        _favorites.value = currentFavorites
+        
+        // TODO: API 연동 시 서버에 찜하기 상태 업데이트
+        Timber.d("찜하기 상태 변경: productId=$productId, isFavorite=${currentFavorites.contains(productId)}")
     }
 
     private fun loadSections() {

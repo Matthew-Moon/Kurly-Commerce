@@ -30,6 +30,7 @@ fun HomeScreen(
     val sections by viewModel.sections.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
     val error by viewModel.error.collectAsState()
+    val favorites by viewModel.favorites.collectAsState()
 
     val pullRefreshState = rememberPullRefreshState(
         refreshing = isLoading,
@@ -54,7 +55,18 @@ fun HomeScreen(
                     modifier = Modifier.fillMaxSize()
                 ) {
                     items(sections) { section ->
-                        KurlySection(model = section)
+                        KurlySection(
+                            model = section.copy(
+                                products = section.products.map { product ->
+                                    product.copy(
+                                        isFavorite = favorites.contains(product.id)
+                                    )
+                                }
+                            ),
+                            onFavoriteClick = { productId ->
+                                viewModel.toggleFavorite(productId)
+                            }
+                        )
                     }
                 }
             }

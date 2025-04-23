@@ -21,7 +21,10 @@ import com.kurly.android.commerce.presentation.home.model.SectionUiModel
 import com.kurly.android.commerce.presentation.theme.KurlyColor
 
 @Composable
-fun KurlySection(model: SectionUiModel) {
+fun KurlySection(
+    model: SectionUiModel,
+    onFavoriteClick: (Long) -> Unit = {}
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -34,9 +37,9 @@ fun KurlySection(model: SectionUiModel) {
 
         // 섹션 타입에 따른 레이아웃
         when (model.type) {
-            SectionType.HORIZONTAL -> HorizontalProductList(products = model.products)
-            SectionType.VERTICAL -> VerticalProductList(products = model.products)
-            SectionType.GRID -> GridProductList(products = model.products)
+            SectionType.HORIZONTAL -> HorizontalProductList(products = model.products, onFavoriteClick = onFavoriteClick)
+            SectionType.VERTICAL -> VerticalProductList(products = model.products, onFavoriteClick = onFavoriteClick)
+            SectionType.GRID -> GridProductList(products = model.products, onFavoriteClick = onFavoriteClick)
         }
 
         HorizontalDivider(
@@ -50,7 +53,10 @@ fun KurlySection(model: SectionUiModel) {
 }
 
 @Composable
-private fun GridProductList(products: List<ProductUiModel>) {
+private fun GridProductList(
+    products: List<ProductUiModel>,
+    onFavoriteClick: (Long) -> Unit = {}
+) {
     LazyHorizontalGrid(
         modifier = Modifier
             .fillMaxWidth()
@@ -60,13 +66,21 @@ private fun GridProductList(products: List<ProductUiModel>) {
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         items(products) { product ->
-            KurlyProduct(product = product)
+            KurlyProduct(
+                product = product,
+                onFavoriteClick = { isFavorite ->
+                    onFavoriteClick(product.id)
+                }
+            )
         }
     }
 }
 
 @Composable
-private fun HorizontalProductList(products: List<ProductUiModel>) {
+private fun HorizontalProductList(
+    products: List<ProductUiModel>,
+    onFavoriteClick: (Long) -> Unit = {}
+) {
     LazyRow(
         modifier = Modifier
             .fillMaxWidth()
@@ -75,13 +89,21 @@ private fun HorizontalProductList(products: List<ProductUiModel>) {
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         items(products) { product ->
-            KurlyProduct(product = product)
+            KurlyProduct(
+                product = product,
+                onFavoriteClick = { isFavorite ->
+                    onFavoriteClick(product.id)
+                }
+            )
         }
     }
 }
 
 @Composable
-private fun VerticalProductList(products: List<ProductUiModel>) {
+private fun VerticalProductList(
+    products: List<ProductUiModel>,
+    onFavoriteClick: (Long) -> Unit = {}
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -92,7 +114,10 @@ private fun VerticalProductList(products: List<ProductUiModel>) {
             KurlyProduct(
                 product = product,
                 modifier = Modifier.fillMaxWidth(),
-                isVertical = true
+                isVertical = true,
+                onFavoriteClick = { isFavorite ->
+                    onFavoriteClick(product.id)
+                }
             )
         }
     }
