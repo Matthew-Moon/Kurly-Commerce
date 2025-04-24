@@ -52,7 +52,7 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.okhttp.logging.interceptor)
     implementation(libs.gson)
-    
+
     // Coil 이미지 로딩 라이브러리
     implementation(libs.coil)
     implementation(libs.coil.compose)
@@ -80,4 +80,6 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
 
     implementation ("androidx.compose.material:material:1.7.8")
+    implementation ("androidx.paging:paging-runtime:3.2.1")
+    implementation ("androidx.paging:paging-compose:3.2.1")
 }
