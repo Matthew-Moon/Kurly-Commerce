@@ -1,8 +1,4 @@
-package com.kurly.android.commerce.data.model
-
-data class SectionProductsResponse(
-    val data: List<Product>
-)
+package com.kurly.android.commerce.domain.model
 
 data class Product(
     val id: Long,
