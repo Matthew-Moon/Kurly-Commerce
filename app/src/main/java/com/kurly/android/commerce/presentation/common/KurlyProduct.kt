@@ -1,23 +1,19 @@
 package com.kurly.android.commerce.presentation.common
 
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -33,10 +29,52 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.kurly.android.commerce.R
 import com.kurly.android.commerce.presentation.home.model.ProductUiModel
-import com.kurly.android.commerce.presentation.theme.CancelPrice
-import com.kurly.android.commerce.presentation.theme.DiscountLate
-import com.kurly.android.commerce.presentation.theme.ProductName
-import com.kurly.android.commerce.presentation.theme.ProductPrice
+import com.kurly.android.commerce.presentation.theme.*
+import kotlinx.coroutines.delay
+
+@Composable
+private fun AnimatedFavoriteButton(
+    isFavorite: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var isPressed by remember { mutableStateOf(false) }
+    val scale by animateFloatAsState(
+        targetValue = if (isPressed) 1.2f else 1f,
+        animationSpec = tween(
+            durationMillis = 150,
+            easing = FastOutSlowInEasing
+        ), 
+        label = "favorite_scale"
+    )
+
+    IconButton(
+        onClick = {
+            onClick()
+            isPressed = true
+        },
+        modifier = modifier
+            .padding(8.dp)
+            .size(32.dp)
+            .scale(scale)
+    ) {
+        Icon(
+            painter = painterResource(
+                id = if (isFavorite) R.drawable.ic_btn_heart_on
+                else R.drawable.ic_btn_heart_off
+            ),
+            contentDescription = if (isFavorite) "찜하기 취소" else "찜하기",
+            tint = Color.Unspecified
+        )
+    }
+
+    LaunchedEffect(isPressed) {
+        if (isPressed) {
+            delay(150)
+            isPressed = false
+        }
+    }
+}
 
 @Composable
 fun KurlyProduct(
@@ -56,7 +94,6 @@ fun KurlyProduct(
             )
             .background(Color.White)
     ) {
-        // 상품 이미지와 찜하기 버튼
         Box {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
@@ -80,23 +117,11 @@ fun KurlyProduct(
                 contentScale = ContentScale.Crop
             )
 
-            // 찜하기 버튼
-            IconButton(
+            AnimatedFavoriteButton(
+                isFavorite = product.isFavorite,
                 onClick = { onFavoriteClick(product.id) },
-                modifier = Modifier
-                    .padding(8.dp)
-                    .size(32.dp)
-                    .align(Alignment.TopEnd)
-            ) {
-                Icon(
-                    painter = painterResource(
-                        id = if (product.isFavorite) R.drawable.ic_btn_heart_on
-                        else R.drawable.ic_btn_heart_off
-                    ),
-                    contentDescription = if (product.isFavorite) "찜하기 취소" else "찜하기",
-                    tint = Color.Unspecified
-                )
-            }
+                modifier = Modifier.align(Alignment.TopEnd)
+            )
         }
 
         // 상품명
