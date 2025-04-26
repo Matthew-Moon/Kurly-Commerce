@@ -97,7 +97,7 @@ private fun VerticalProductList(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 12.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(32.dp)
     ) {
         products.forEach { product ->
             KurlyProduct(
