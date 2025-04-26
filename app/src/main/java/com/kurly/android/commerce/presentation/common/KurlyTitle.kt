@@ -13,25 +13,31 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+private val TitleTextStyle = TextStyle(
+    fontSize = 16.sp,
+    lineHeight = 20.sp,
+    fontWeight = FontWeight.Bold,
+    color = Color.Black
+)
+
 @Composable
-fun KurlyTitle(modifier: Modifier = Modifier, title: String) {
+fun KurlyTitle(
+    title: String,
+    modifier: Modifier = Modifier,
+    backgroundColor: Color = Color.Transparent // 기본 투명
+) {
     Text(
+        text = title,
         modifier = modifier
             .fillMaxWidth()
-            .padding(12.dp)
-            .background(Color.White),
-        text = title,
-        style = TextStyle(
-            fontSize = 16.sp,
-            lineHeight = 15.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.Black
-        ),
+            .background(backgroundColor)
+            .padding(12.dp),
+        style = TitleTextStyle
     )
 }
 
 @Preview
 @Composable
 fun KurlyTitlePreview() {
-    KurlyTitle(title = "함께하면 더 좋은 상품")
+    KurlyTitle(title = "함께하면 더 좋은 상품", backgroundColor = Color.White)
 }

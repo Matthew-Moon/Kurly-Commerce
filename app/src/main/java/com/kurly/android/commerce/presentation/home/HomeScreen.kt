@@ -60,6 +60,7 @@ fun HomeScreen(
                     modifier = Modifier.align(Alignment.Center)
                 )
             }
+
             sections.itemCount > 0 -> {
                 SectionList(
                     sections = sections,
@@ -98,6 +99,8 @@ private fun SectionList(
     products: List<ProductUiModel>,
     onFavoriteClick: (Long) -> Unit
 ) {
+    val productsMap = rememberProductsMap(products)
+
     LazyColumn(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -107,11 +110,11 @@ private fun SectionList(
         ) { index ->
             sections[index]?.let { section ->
                 val updatedProducts = section.products.map { product ->
-                    products.find { it.id == product.id }?.let { updatedProduct ->
+                    productsMap[product.id]?.let { updatedProduct ->
                         product.copy(isFavorite = updatedProduct.isFavorite)
                     } ?: product
                 }
-                
+
                 KurlySection(
                     model = section.copy(products = updatedProducts),
                     onFavoriteClick = onFavoriteClick
@@ -121,7 +124,7 @@ private fun SectionList(
                     HorizontalDivider(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = 10.dp),
+                            .padding(vertical = 10.dp),
                         thickness = 3.dp,
                         color = KurlyColor
                     )
@@ -129,6 +132,11 @@ private fun SectionList(
             }
         }
     }
+}
+
+@Composable
+private fun rememberProductsMap(products: List<ProductUiModel>): Map<Long, ProductUiModel> {
+    return products.associateBy { it.id }
 }
 
 @Preview

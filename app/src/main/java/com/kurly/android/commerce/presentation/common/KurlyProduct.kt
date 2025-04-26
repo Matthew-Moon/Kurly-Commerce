@@ -30,6 +30,7 @@ import coil.request.ImageRequest
 import com.kurly.android.commerce.R
 import com.kurly.android.commerce.presentation.home.model.ProductUiModel
 import com.kurly.android.commerce.presentation.theme.*
+
 import kotlinx.coroutines.delay
 
 @Composable
@@ -41,17 +42,14 @@ private fun AnimatedFavoriteButton(
     var isPressed by remember { mutableStateOf(false) }
     val scale by animateFloatAsState(
         targetValue = if (isPressed) 1.2f else 1f,
-        animationSpec = tween(
-            durationMillis = 150,
-            easing = FastOutSlowInEasing
-        ), 
+        animationSpec = tween(durationMillis = 150, easing = FastOutSlowInEasing),
         label = "favorite_scale"
     )
 
     IconButton(
         onClick = {
-            onClick()
             isPressed = true
+            onClick()
         },
         modifier = modifier
             .padding(8.dp)
@@ -68,7 +66,7 @@ private fun AnimatedFavoriteButton(
         )
     }
 
-    LaunchedEffect(isPressed) {
+    LaunchedEffect(isPressed == true) {
         if (isPressed) {
             delay(150)
             isPressed = false
@@ -83,16 +81,31 @@ fun KurlyProduct(
     isVertical: Boolean = false,
     onFavoriteClick: (Long) -> Unit = {}
 ) {
+    val discountTextStyle = TextStyle(
+        fontSize = 12.sp,
+        fontWeight = FontWeight.Bold,
+        color = DiscountLate
+    )
+
+    val discountedPriceTextStyle = TextStyle(
+        fontSize = 12.sp,
+        fontWeight = FontWeight.Bold,
+        color = ProductPrice
+    )
+
+    val originalPriceTextStyle = TextStyle(
+        fontSize = 10.sp,
+        color = CancelPrice,
+        textDecoration = TextDecoration.LineThrough
+    )
+
     Column(
         modifier = modifier
-            .then(
-                if (isVertical) {
-                    Modifier.fillMaxWidth()
-                } else {
-                    Modifier.width(150.dp)
-                }
-            )
             .background(Color.White)
+            .then(
+                if (isVertical) Modifier.fillMaxWidth()
+                else Modifier.width(150.dp)
+            )
     ) {
         Box {
             AsyncImage(
@@ -102,18 +115,15 @@ fun KurlyProduct(
                     .build(),
                 contentDescription = product.name,
                 modifier = Modifier
+                    .clip(RoundedCornerShape(6.dp))
                     .then(
-                        if (isVertical) {
-                            Modifier
-                                .fillMaxWidth()
-                                .aspectRatio(6f / 4f)
-                        } else {
-                            Modifier
-                                .width(150.dp)
-                                .height(200.dp)
-                        }
-                    )
-                    .clip(RoundedCornerShape(6.dp)),
+                        if (isVertical) Modifier
+                            .fillMaxWidth()
+                            .aspectRatio(6f / 4f)
+                        else Modifier
+                            .width(150.dp)
+                            .height(200.dp)
+                    ),
                 contentScale = ContentScale.Crop
             )
 
@@ -124,7 +134,6 @@ fun KurlyProduct(
             )
         }
 
-        // 상품명
         Text(
             text = product.name,
             maxLines = if (isVertical) 1 else 2,
@@ -138,105 +147,74 @@ fun KurlyProduct(
             modifier = Modifier.padding(top = 8.dp)
         )
 
-        // 할인율 + 판매금액
         product.discountedPrice?.let { discountedPrice ->
+            val discountRate = if (product.originalPrice != 0) {
+                ((product.originalPrice - discountedPrice) * 100 / product.originalPrice)
+            } else {
+                0
+            }
+
             if (isVertical) {
-                // vertical 타입일 때는 한 줄에 모든 가격 정보 표시
                 Row(
                     modifier = Modifier.padding(top = 4.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    // 할인율
-                    val discountRate = ((product.originalPrice - discountedPrice) * 100 / product.originalPrice)
                     Text(
                         text = "${discountRate}%",
-                        style = TextStyle(
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = DiscountLate
-                        ),
+                        style = discountTextStyle,
                         modifier = Modifier
                             .padding(end = 4.dp)
                             .alignByBaseline()
                     )
 
-                    // 할인가
                     Text(
                         text = "${discountedPrice.toPriceString()}원",
-                        style = TextStyle(
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = ProductPrice
-                        ), modifier = Modifier
+                        style = discountedPriceTextStyle,
+                        modifier = Modifier
                             .padding(end = 4.dp)
                             .alignByBaseline()
                     )
 
-                    // 원가 (취소선)
                     Text(
                         text = "${product.originalPrice.toPriceString()}원",
-                        style = TextStyle(
-                            fontSize = 10.sp,
-                            color = CancelPrice,
-                            textDecoration = TextDecoration.LineThrough
-                        ), modifier = Modifier
+                        style = originalPriceTextStyle,
+                        modifier = Modifier
                             .padding(end = 4.dp)
                             .alignByBaseline()
                     )
                 }
             } else {
-                // 기존 레이아웃 (할인율과 할인가 한 줄, 원가 다음 줄)
                 Row(
                     modifier = Modifier.padding(top = 4.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    // 할인율
-                    val discountRate = ((product.originalPrice - discountedPrice) * 100 / product.originalPrice)
                     Text(
                         text = "${discountRate}%",
-                        style = TextStyle(
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = DiscountLate
-                        ),
+                        style = discountTextStyle,
                         modifier = Modifier
                             .padding(end = 4.dp)
                             .alignByBaseline()
                     )
 
-                    // 할인가
                     Text(
                         text = "${discountedPrice.toPriceString()}원",
-                        style = TextStyle(
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = ProductPrice
-                        ), modifier = Modifier
+                        style = discountedPriceTextStyle,
+                        modifier = Modifier
                             .padding(end = 4.dp)
                             .alignByBaseline()
                     )
                 }
 
-                // 원가 (취소선)
                 Text(
                     text = "${product.originalPrice.toPriceString()}원",
-                    style = TextStyle(
-                        fontSize = 10.sp,
-                        color = CancelPrice,
-                        textDecoration = TextDecoration.LineThrough
-                    ),
+                    style = originalPriceTextStyle,
                     modifier = Modifier.padding(top = 2.dp)
                 )
             }
         } ?: run {
-            // 할인이 없는 경우 원가만 표시
             Text(
                 text = "${product.originalPrice.toPriceString()}원",
-                style = TextStyle(
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = ProductPrice
-                ),
+                style = discountedPriceTextStyle,
                 modifier = Modifier.padding(top = 4.dp)
             )
         }
@@ -249,11 +227,12 @@ fun KurlyProductPreview() {
     KurlyProduct(
         product = ProductUiModel(
             id = 1,
-            name = "[샐러딩] 레디믹스 스탠다드 150g\n가나다라",
+            name = "[샐러딩] 레디믹스 스탠다드 150g\n가나다라마바사",
             image = "",
             originalPrice = 6200,
             discountedPrice = 5200,
             isSoldOut = false
-        ), isVertical = true
+        ),
+        isVertical = true
     )
 }

@@ -23,38 +23,40 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Splash Screen 설치
         installSplashScreen()
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-
-        // 배경색 지정 (여기선 흰색 예시)
-        val desiredColor = KurlyColor.toArgb()
+        // 상태바 설정
         WindowCompat.setDecorFitsSystemWindows(window, true)
 
+        val desiredColor = KurlyColor.toArgb() // 어두운 색상이어야 흰색 아이콘이 잘 보임
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.setDecorFitsSystemWindows(true)
             window.insetsController?.apply {
+                // 흰색 아이콘을 위해 light appearance를 꺼야 한다 (0 적용)
                 setSystemBarsAppearance(
                     0,
                     WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
                 )
             }
-            window.statusBarColor = desiredColor // 여전히 필요함
+            window.statusBarColor = desiredColor
         } else {
             @Suppress("DEPRECATION")
             window.statusBarColor = desiredColor
-
             WindowInsetsControllerCompat(window, window.decorView).apply {
-                isAppearanceLightStatusBars = false // 흰 배경에 검정 아이콘
+                isAppearanceLightStatusBars = false // 흰색 아이콘
             }
         }
 
         setContent {
             KurlyCommerceTheme {
-                Scaffold(modifier = Modifier.Companion.fillMaxSize()) { innerPadding ->
+                Scaffold(
+                    modifier = Modifier.fillMaxSize()
+                ) { innerPadding ->
                     HomeScreen(
-                        modifier = Modifier.Companion.padding(innerPadding)
+                        modifier = Modifier.padding(innerPadding)
                     )
                 }
             }
