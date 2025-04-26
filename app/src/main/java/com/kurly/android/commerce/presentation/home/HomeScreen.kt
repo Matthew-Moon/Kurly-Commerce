@@ -23,6 +23,7 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import com.kurly.android.commerce.presentation.common.KurlySection
+import com.kurly.android.commerce.presentation.home.model.ProductUiModel
 import com.kurly.android.commerce.presentation.home.model.SectionUiModel
 import com.kurly.android.commerce.presentation.theme.KurlyColor
 import timber.log.Timber
@@ -34,7 +35,7 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val sections = viewModel.sections.collectAsLazyPagingItems()
-    val favorites by viewModel.favorites.collectAsState()
+    val products by viewModel.products.collectAsState()
 
     val pullRefreshState = rememberPullRefreshState(
         refreshing = sections.loadState.refresh is LoadState.Loading,
@@ -58,7 +59,7 @@ fun HomeScreen(
             sections.itemCount > 0 -> {
                 SectionList(
                     sections = sections,
-                    favorites = favorites,
+                    products = products,
                     onFavoriteClick = { productId ->
                         viewModel.toggleFavorite(productId)
                     }
@@ -92,7 +93,7 @@ fun HomeScreen(
 @Composable
 private fun SectionList(
     sections: LazyPagingItems<SectionUiModel>,
-    favorites: Set<Long>,
+    products: List<ProductUiModel>,
     onFavoriteClick: (Long) -> Unit
 ) {
     LazyColumn(
@@ -103,14 +104,14 @@ private fun SectionList(
             key = sections.itemKey { it.id }
         ) { index ->
             sections[index]?.let { section ->
+                val updatedProducts = section.products.map { product ->
+                    products.find { it.id == product.id }?.let { updatedProduct ->
+                        product.copy(isFavorite = updatedProduct.isFavorite)
+                    } ?: product
+                }
+
                 KurlySection(
-                    model = section.copy(
-                        products = section.products.map { product ->
-                            product.copy(
-                                isFavorite = favorites.contains(product.id)
-                            )
-                        }
-                    ),
+                    model = section.copy(products = updatedProducts),
                     onFavoriteClick = onFavoriteClick
                 )
             }
