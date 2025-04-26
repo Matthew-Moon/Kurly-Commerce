@@ -1,14 +1,18 @@
 package com.kurly.android.commerce.presentation.common
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -17,6 +21,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
@@ -26,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.kurly.android.commerce.R
 import com.kurly.android.commerce.presentation.home.model.ProductUiModel
 import com.kurly.android.commerce.presentation.theme.CancelPrice
 import com.kurly.android.commerce.presentation.theme.DiscountLate
@@ -36,7 +42,8 @@ import com.kurly.android.commerce.presentation.theme.ProductPrice
 fun KurlyProduct(
     modifier: Modifier = Modifier,
     product: ProductUiModel,
-    isVertical: Boolean = false
+    isVertical: Boolean = false,
+    onFavoriteClick: (Long) -> Unit = {}
 ) {
     Column(
         modifier = modifier
@@ -49,28 +56,48 @@ fun KurlyProduct(
             )
             .background(Color.White)
     ) {
-        // 상품 이미지
-        AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(product.image)
-                .crossfade(true)
-                .build(),
-            contentDescription = product.name,
-            modifier = Modifier
-                .then(
-                    if (isVertical) {
-                        Modifier
-                            .fillMaxWidth()
-                            .aspectRatio(6f/4f) // 6:4 비율 설정
-                    } else {
-                        Modifier
-                            .width(150.dp)
-                            .height(200.dp)
-                    }
+        // 상품 이미지와 찜하기 버튼
+        Box {
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(product.image)
+                    .crossfade(true)
+                    .build(),
+                contentDescription = product.name,
+                modifier = Modifier
+                    .then(
+                        if (isVertical) {
+                            Modifier
+                                .fillMaxWidth()
+                                .aspectRatio(6f / 4f)
+                        } else {
+                            Modifier
+                                .width(150.dp)
+                                .height(200.dp)
+                        }
+                    )
+                    .clip(RoundedCornerShape(6.dp)),
+                contentScale = ContentScale.Crop
+            )
+
+            // 찜하기 버튼
+            IconButton(
+                onClick = { onFavoriteClick(product.id) },
+                modifier = Modifier
+                    .padding(8.dp)
+                    .size(32.dp)
+                    .align(Alignment.TopEnd)
+            ) {
+                Icon(
+                    painter = painterResource(
+                        id = if (product.isFavorite) R.drawable.ic_btn_heart_on
+                        else R.drawable.ic_btn_heart_off
+                    ),
+                    contentDescription = if (product.isFavorite) "찜하기 취소" else "찜하기",
+                    tint = Color.Unspecified
                 )
-                .clip(RoundedCornerShape(6.dp)),
-            contentScale = ContentScale.Crop
-        )
+            }
+        }
 
         // 상품명
         Text(
