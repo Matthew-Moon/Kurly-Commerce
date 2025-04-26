@@ -2,8 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    id("com.google.dagger.hilt.android")
-    id("kotlin-kapt")
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin.kapt)
 }
 
 android {
@@ -42,21 +42,7 @@ dependencies {
     // MockServer 모듈 의존성 추가
     implementation(project(":mockserver"))
 
-    // Hilt 의존성 추가
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
-
-    // Retrofit 의존성 추가
-    implementation(libs.retrofit)
-    implementation(libs.retrofit.converter.gson)
-    implementation(libs.okhttp)
-    implementation(libs.okhttp.logging.interceptor)
-    implementation(libs.gson)
-
-    // Coil 이미지 로딩 라이브러리
-    implementation(libs.coil)
-    implementation(libs.coil.compose)
-
+    implementation (libs.androidx.material)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -73,15 +59,37 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    // build.gradle.kts에 추가
-    implementation("com.jakewharton.timber:timber:5.0.1")
 
-    // Hilt Compose Navigation 라이브러리
-    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+    // 페이징 라이브러리
+    implementation (libs.androidx.paging.runtime)
+    implementation (libs.androidx.paging.compose)
 
-    implementation ("androidx.compose.material:material:1.7.8")
-    implementation ("androidx.paging:paging-runtime:3.2.1")
-    implementation ("androidx.paging:paging-compose:3.2.1")
+    // 로그 라이브러리
+    implementation(libs.timber)
 
-    implementation("androidx.core:core-splashscreen:1.0.1")
+    // Hilt 의존성 추가
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
+    // Hilt Compose Navigation
+    implementation(libs.androidx.hilt.navigation.compose)
+    // Hilt test
+    testImplementation(libs.hilt.android.testing)
+    androidTestImplementation(libs.hilt.android.testing)
+    kaptAndroidTest(libs.hilt.compiler)
+    androidTestAnnotationProcessor(libs.hilt.compiler)
+
+    // Retrofit 의존성 추가
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging.interceptor)
+    implementation(libs.gson)
+
+    // Coil 이미지 로딩 라이브러리
+    implementation(libs.coil)
+    implementation(libs.coil.compose)
+
+    // 스플래시 스크린
+    implementation(libs.androidx.core.splashscreen)
+
 }
