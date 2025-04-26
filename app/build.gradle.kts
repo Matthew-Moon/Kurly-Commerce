@@ -39,8 +39,9 @@ android {
 }
 
 dependencies {
-    // MockServer 모듈 의존성 추가
-    implementation(project(":mockserver"))
+    // 도메인 모듈과 데이터 모듈 의존성 추가
+    implementation(project(":domain"))
+    implementation(project(":data"))
 
     implementation (libs.androidx.material)
     implementation(libs.androidx.core.ktx)
