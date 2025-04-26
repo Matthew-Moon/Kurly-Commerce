@@ -1,4 +1,4 @@
-package com.kurly.android.commerce
+package com.kurly.android.commerce.presentation
 
 import android.os.Build
 import android.os.Bundle
@@ -52,9 +52,9 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             KurlyCommerceTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                Scaffold(modifier = Modifier.Companion.fillMaxSize()) { innerPadding ->
                     HomeScreen(
-                        modifier = Modifier.padding(innerPadding)
+                        modifier = Modifier.Companion.padding(innerPadding)
                     )
                 }
             }

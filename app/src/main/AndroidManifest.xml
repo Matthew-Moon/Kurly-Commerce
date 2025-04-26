@@ -18,7 +18,7 @@
         android:theme="@style/Theme.KurlyCommerce">
 
         <activity
-            android:name=".MainActivity"
+            android:name=".presentation.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.KurlyCommerce">
             <intent-filter>
