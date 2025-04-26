@@ -1,7 +1,6 @@
 package com.kurly.android.commerce.data.di
 
 import android.content.Context
-import android.util.Log
 import com.kurly.android.commerce.data.api.KurlyApi
 import com.kurly.android.mockserver.MockInterceptor
 import dagger.Module
@@ -25,7 +24,6 @@ object NetworkModule {
     @Singleton
     fun provideOkHttpClient(@ApplicationContext context: Context): OkHttpClient {
         val loggingInterceptor = HttpLoggingInterceptor { message ->
-            Log.d(TAG, message)
         }.apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
@@ -39,8 +37,7 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
-        Log.d(TAG, "Retrofit 초기화 - BASE_URL: $BASE_URL")
-        
+
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(okHttpClient)

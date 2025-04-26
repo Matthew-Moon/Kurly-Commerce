@@ -3,7 +3,7 @@ package com.kurly.android.commerce.data.model
 import com.google.gson.annotations.SerializedName
 
 data class SectionListResponse(
-    val data: List<Section>,
+    val data: List<SectionDto>,
     val paging: Paging
 )
 
@@ -12,7 +12,7 @@ data class Paging(
     val nextPage: Int
 )
 
-data class Section(
+data class SectionDto(
     val id: Int,
     val title: String,
     val url: String,
