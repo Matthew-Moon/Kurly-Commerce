@@ -3,12 +3,15 @@ package com.kurly.android.commerce.presentation.home
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -17,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
@@ -74,7 +78,6 @@ fun HomeScreen(
             contentColor = KurlyColor
         )
 
-        // 추가 로딩 인디케이터
         if (sections.loadState.append is LoadState.Loading) {
             CircularProgressIndicator(
                 modifier = Modifier.align(Alignment.Center),
@@ -82,7 +85,6 @@ fun HomeScreen(
             )
         }
 
-        // 추가 로딩 에러
         if (sections.loadState.append is LoadState.Error) {
             val errorMessage = (sections.loadState.append as LoadState.Error).error.message
             Timber.e("추가 페이지 로드 실패: $errorMessage")
@@ -109,11 +111,21 @@ private fun SectionList(
                         product.copy(isFavorite = updatedProduct.isFavorite)
                     } ?: product
                 }
-
+                
                 KurlySection(
                     model = section.copy(products = updatedProducts),
                     onFavoriteClick = onFavoriteClick
                 )
+
+                if (index < sections.itemCount - 1) {
+                    HorizontalDivider(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 10.dp),
+                        thickness = 3.dp,
+                        color = KurlyColor
+                    )
+                }
             }
         }
     }

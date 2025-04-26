@@ -42,13 +42,6 @@ fun KurlySection(
             SectionType.GRID -> GridProductList(products = model.products, onFavoriteClick = onFavoriteClick)
         }
 
-        HorizontalDivider(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 10.dp),
-            thickness = 3.dp,
-            color = KurlyColor
-        )
     }
 }
 
