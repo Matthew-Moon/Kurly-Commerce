@@ -16,7 +16,7 @@ class KurlyRepository @Inject constructor(
     fun getSectionsPaging(): Flow<PagingData<SectionUiModel>> {
         return Pager(
             config = PagingConfig(
-                pageSize = 20,
+                pageSize = PAGE_SIZE,
                 enablePlaceholders = false
             ),
             pagingSourceFactory = { SectionPagingSource(api) }
