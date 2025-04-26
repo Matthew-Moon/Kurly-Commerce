@@ -1,12 +1,15 @@
 package com.kurly.android.commerce.data.model
 
+import com.google.gson.annotations.SerializedName
+
 data class SectionListResponse(
     val data: List<Section>,
     val paging: Paging
 )
 
 data class Paging(
-    val next_page: Int
+    @SerializedName("next_page")
+    val nextPage: Int
 )
 
 data class Section(

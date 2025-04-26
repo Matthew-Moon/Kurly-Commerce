@@ -30,8 +30,8 @@ class SectionPagingSource(
                     null
                 }
                 else -> {
-                    Timber.d("다음 페이지 존재: currentPage=$page, nextPage=${response.paging.next_page}")
-                    response.paging.next_page
+                    Timber.d("다음 페이지 존재: currentPage=$page, nextPage=${response.paging.nextPage}")
+                    response.paging.nextPage
                 }
             }
 
