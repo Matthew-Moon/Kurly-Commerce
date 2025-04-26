@@ -23,7 +23,7 @@ class FavoritePreferences(private val context: Context) {
 
     fun getFavoriteStatus(productId: Long): Flow<Boolean> {
         return context.dataStore.data.map { preferences ->
-            preferences[getFavoriteKey(productId)] == true
+            preferences[getFavoriteKey(productId)] ?: false
         }
     }
 } 
