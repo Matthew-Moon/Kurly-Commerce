@@ -16,12 +16,12 @@ class KurlyRepository @Inject constructor(
     fun getSectionsPaging(): Flow<PagingData<SectionUiModel>> {
         return Pager(
             config = PagingConfig(
-                pageSize = PAGE_SIZE,
-                enablePlaceholders = false,
-                prefetchDistance = 3
+                pageSize = 20,
+                enablePlaceholders = false
             ),
             pagingSourceFactory = { SectionPagingSource(api) }
         ).flow
+
     }
 
     suspend fun getSectionProducts(sectionId: Int): SectionProductsResponse {

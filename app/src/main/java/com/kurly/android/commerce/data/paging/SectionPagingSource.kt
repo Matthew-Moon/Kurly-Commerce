@@ -18,14 +18,14 @@ class SectionPagingSource(
 
             // API 호출
             val response = api.getSections(page)
-            
+
             // 다음 페이지 계산
             val nextPage = when {
                 response.data.isEmpty() -> {
                     Timber.d("더 이상 로드할 섹션이 없습니다: page=$page")
                     null
                 }
-                false -> {
+                response.paging == null -> {
                     Timber.d("마지막 페이지입니다: page=$page")
                     null
                 }

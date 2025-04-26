@@ -11,6 +11,8 @@ import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,6 +34,7 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val sections = viewModel.sections.collectAsLazyPagingItems()
+    val favorites by viewModel.favorites.collectAsState()
 
     val pullRefreshState = rememberPullRefreshState(
         refreshing = sections.loadState.refresh is LoadState.Loading,
@@ -55,6 +58,7 @@ fun HomeScreen(
             sections.itemCount > 0 -> {
                 SectionList(
                     sections = sections,
+                    favorites = favorites,
                     onFavoriteClick = { productId ->
                         viewModel.toggleFavorite(productId)
                     }
@@ -88,6 +92,7 @@ fun HomeScreen(
 @Composable
 private fun SectionList(
     sections: LazyPagingItems<SectionUiModel>,
+    favorites: Set<Long>,
     onFavoriteClick: (Long) -> Unit
 ) {
     LazyColumn(
@@ -99,7 +104,14 @@ private fun SectionList(
         ) { index ->
             sections[index]?.let { section ->
                 KurlySection(
-                    model = section
+                    model = section.copy(
+                        products = section.products.map { product ->
+                            product.copy(
+                                isFavorite = favorites.contains(product.id)
+                            )
+                        }
+                    ),
+                    onFavoriteClick = onFavoriteClick
                 )
             }
         }

@@ -49,8 +49,6 @@ class HomeViewModel @Inject constructor(
             currentFavorites.add(productId)
         }
         _favorites.value = currentFavorites
-
-        // TODO: API 연동 시 서버에 찜하기 상태 업데이트
         Timber.d("찜하기 상태 변경: productId=$productId, isFavorite=${currentFavorites.contains(productId)}")
     }
 
@@ -68,7 +66,7 @@ class HomeViewModel @Inject constructor(
                         originalPrice = product.originalPrice,
                         discountedPrice = product.discountedPrice,
                         isSoldOut = product.isSoldOut,
-//                        isFavorite = _favorites.value.contains(product.id)
+                        isFavorite = _favorites.value.contains(product.id)
                     )
                 }
             )

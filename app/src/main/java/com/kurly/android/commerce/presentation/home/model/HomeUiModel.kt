@@ -13,7 +13,8 @@ data class ProductUiModel(
     val image: String,
     val originalPrice: Int,
     val discountedPrice: Int? = null,
-    val isSoldOut: Boolean
+    val isSoldOut: Boolean,
+    val isFavorite: Boolean = false
 )
 
 // 섹션 타입 상수
